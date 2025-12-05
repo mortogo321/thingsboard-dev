@@ -1,0 +1,45 @@
+# ThingsBoard Development - Root .gitignore
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+*.env.local
+
+# Logs
+*.log
+*.log.*
+logs/
+
+# Temp files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Docker volumes (if using bind mounts)
+.docker-data/
+
+# Scripts output
+*.toDelete
+output/
+
+# Instance
+.instance_id

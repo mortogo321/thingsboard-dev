@@ -1,0 +1,97 @@
+# ThingsBoard Web UI - Frontend .gitignore
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build output
+dist/
+build/
+.angular/
+.cache/
+
+# Angular CLI
+.angular/cache/
+
+# Testing
+coverage/
+.nyc_output/
+test-results/
+
+# IDE
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Editor directories
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ESLint
+.eslintcache
+
+# Stylelint
+.stylelintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# Optional npm cache
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Yarn
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Maven (for ui-ngx pom.xml build)
+target/
+
+# Generated files
+src/app/shared/models/generated/
+
+# Temporary files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Profiling
+.clinic/
+*.cpuprofile
+*.heapprofile
+
+# PWA
+ngsw.json
+
+# Local SSL certificates
+*.pem
+*.key
+*.crt
