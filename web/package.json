@@ -118,7 +118,7 @@
     "@types/systemjs": "6.15.1",
     "@types/tinycolor2": "^1.4.6",
     "@types/tooltipster": "^0.0.35",
-    "angular-eslint": "~18.4.3",
+    "angular-eslint": "~22.5.0",
     "autoprefixer": "^10.4.20",
     "directory-tree": "^3.5.2",
     "eslint": "~9.17.0",
