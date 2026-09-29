@@ -112,7 +112,7 @@
     "@types/leaflet-providers": "1.2.4",
     "@types/leaflet.gridlayer.googlemutant": "0.4.9",
     "@types/leaflet.markercluster": "1.5.5",
-    "@types/lodash": "^4.17.13",
+    "@types/lodash": "^4.17.25",
     "@types/node": "~20.17.8",
     "@types/raphael": "^2.3.9",
     "@types/systemjs": "6.15.1",
