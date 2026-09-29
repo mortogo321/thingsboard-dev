@@ -2,8 +2,10 @@
 # Supports: development (hot reload) and production
 # Build context: root directory
 
-ARG NODE_IMAGE=node:lts-alpine
-ARG NGINX_IMAGE=nginx:alpine-slim
+# Node 22: highest major officially supported by Angular 18.
+# Pinned: unpinned lts/alpine-slim tags float and break reproducible builds.
+ARG NODE_IMAGE=node:22-alpine
+ARG NGINX_IMAGE=nginx:1.30.5-alpine-slim
 
 # ============================================
 # Stage 1: Dependencies
@@ -14,7 +16,8 @@ WORKDIR /app
 
 COPY web/package.json web/yarn.lock ./
 
-RUN yarn install --frozen-lockfile && yarn cache clean
+# git required: several deps are git URLs (echarts/flot/ngx-flowchart forks)
+RUN apk add --no-cache git && yarn install --frozen-lockfile && yarn cache clean
 
 # ============================================
 # Stage 2: Builder
@@ -26,9 +29,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY web/ .
 
-# Copy production env
-COPY web/.env.production /app/.env
-
+# Web config is bake-time via src/environments/* (no runtime .env is read)
 RUN yarn build:prod && rm -rf node_modules
 
 # ============================================
@@ -38,10 +39,13 @@ FROM ${NODE_IMAGE} AS development
 
 WORKDIR /app
 
+# git required: entrypoint runs yarn install, several deps are git URLs
+RUN apk add --no-cache git
+
 COPY web/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# Source code and .env mounted via docker-compose volumes
+# Source code mounted via docker-compose volumes
 
 EXPOSE 4200
 

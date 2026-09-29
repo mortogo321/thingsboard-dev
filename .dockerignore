@@ -26,10 +26,9 @@ web/.angular/
 **/*.spec.ts
 **/e2e/
 
-# Environment files (will be copied explicitly)
+# Environment files (api/.env.production is copied explicitly in api builds,
+# which use ./api as context with api/.dockerignore)
 **/.env*
-!web/.env.development
-!web/.env.production
 
 # OS files
 .DS_Store

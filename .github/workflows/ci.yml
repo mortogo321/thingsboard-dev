@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Compose validate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - name: Validate dev stack
+        run: docker compose -f docker-compose.dev.yml config --quiet
+      - name: Validate prod stack
+        run: docker compose -f docker-compose.prod.yml config --quiet
+
+  api-modules:
+    name: API modules build+test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Build and test versioned API layer
+        run: mvn --batch-mode verify -f api/api-modules/pom.xml
+
+  docker-web:
+    name: Web image stages
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: docker/setup-buildx-action@v4
+      # NOTE: only deps/development targets are built here. The production
+      # Angular build (yarn build:prod) currently fails on 600+ pre-existing
+      # AoT template errors in the vendored web/ source (verified locally,
+      # untouched by infra work) — repairing the UI is a separate workstream.
+      - name: Build web deps stage (yarn install)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: web/Dockerfile
+          target: deps
+          push: false
+      - name: Build web development stage
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: web/Dockerfile
+          target: development
+          push: false
+
+  # NOTE: the full api production image (complete ThingsBoard platform Maven
+  # package) is intentionally not built here — it needs 8GB+ RAM and 30+ min.
+  # Build it manually when cutting a release:
+  #   docker build -f api/Dockerfile --target production ./api

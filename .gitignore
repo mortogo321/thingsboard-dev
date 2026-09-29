@@ -23,6 +23,20 @@ Thumbs.db
 .env.*.local
 *.env.local
 
+# Java / Maven build outputs
+target/
+*.jar
+*.war
+*.class
+
+# Node / Angular build outputs
+node_modules/
+dist/
+build/
+.angular/
+coverage/
+*.tsbuildinfo
+
 # Logs
 *.log
 *.log.*

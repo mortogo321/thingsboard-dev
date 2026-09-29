@@ -157,7 +157,8 @@
         <module>dao</module>
         <module>edqs</module>
         <module>transport</module>
-        <module>ui-ngx</module>
+        <!-- ui-ngx intentionally not vendored: the Angular frontend lives in /web, not api/ui-ngx -->
+        <module>api-modules</module>
         <module>tools</module>
         <module>application</module>
         <module>msa</module>

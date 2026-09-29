@@ -36,7 +36,6 @@ services:
       - api
     volumes:
       - ./web:/app:cached
-      - ./web/.env.development:/app/.env:ro
     ports:
       - "4200:4200"
     networks:
@@ -44,7 +43,7 @@ services:
 
   # PostgreSQL Database
   postgres:
-    image: postgres:alpine
+    image: postgres:17.8-alpine
     restart: unless-stopped
     environment:
       POSTGRES_DB: thingsboard
@@ -64,7 +63,7 @@ services:
 
   # Redis Cache (Valkey)
   redis:
-    image: valkey/valkey:alpine
+    image: valkey/valkey:9.0.6-alpine
     restart: unless-stopped
     ports:
       - "6379:6379"
@@ -81,7 +80,7 @@ services:
 
   # Zookeeper
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.9.10
     restart: unless-stopped
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
@@ -96,7 +95,7 @@ services:
 
   # Kafka
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.9.10
     restart: unless-stopped
     depends_on:
       - zookeeper
@@ -118,7 +117,7 @@ services:
 
   # MQTT Broker
   mqtt:
-    image: eclipse-mosquitto:latest
+    image: eclipse-mosquitto:2.1.2-alpine
     restart: unless-stopped
     ports:
       - "1883:1883"
@@ -132,7 +131,7 @@ services:
 
   # Kafka UI
   kafka-ui:
-    image: provectuslabs/kafka-ui
+    image: provectuslabs/kafka-ui:v0.7.2
     restart: unless-stopped
     depends_on:
       - kafka
@@ -147,7 +146,7 @@ services:
 
   # pgAdmin
   pgadmin:
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:9.18
     restart: unless-stopped
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@thingsboard.local

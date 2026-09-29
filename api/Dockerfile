@@ -1,8 +1,10 @@
 # ThingsBoard API - Multi-stage Dockerfile
 # Supports: development (hot reload) and production
 
-ARG JDK_IMAGE=eclipse-temurin:jdk-alpine
-ARG JRE_IMAGE=eclipse-temurin:jre-alpine
+# Java 17 required by ThingsBoard 4.3 (maven.compiler.source/target 17).
+# Pinned: unpinned temurin tags float to the latest JDK and break the build.
+ARG JDK_IMAGE=eclipse-temurin:17-jdk-alpine
+ARG JRE_IMAGE=eclipse-temurin:17-jre-alpine
 
 # ============================================
 # Stage 1: Dependencies Cache
@@ -15,6 +17,10 @@ RUN apk add --no-cache maven
 
 COPY pom.xml .
 COPY application/pom.xml application/
+COPY api-modules/pom.xml api-modules/
+COPY api-modules/core/pom.xml api-modules/core/
+COPY api-modules/v1/pom.xml api-modules/v1/
+COPY api-modules/v2/pom.xml api-modules/v2/
 COPY common/ common/
 COPY dao/pom.xml dao/
 COPY rule-engine/pom.xml rule-engine/
@@ -35,9 +41,11 @@ FROM deps AS builder
 
 COPY . .
 
-RUN mvn clean package -DskipTests -pl application -am -q \
+# Versioned API layer first (cheap, fails fast), then the full platform build
+RUN mvn clean package -DskipTests -f api-modules/pom.xml -q \
+    && mvn clean package -DskipTests -pl application -am -q \
     && mv application/target/*.jar /app/app.jar \
-    && rm -rf ~/.m2
+    && rm -rf ~/.m2 api-modules/*/target
 
 # ============================================
 # Stage 3: Extractor (for layered jar)
