@@ -45,7 +45,7 @@
         <rat.version>0.10</rat.version> <!-- unused -->
         <cassandra.version>4.17.0</cassandra.version>
         <metrics.version>4.2.25</metrics.version>
-        <cassandra-all.version>5.0.4</cassandra-all.version> <!-- tools -->
+        <cassandra-all.version>5.0.9</cassandra-all.version> <!-- tools -->
         <guava.version>33.1.0-jre</guava.version>
         <commons-lang3.version>3.18.0</commons-lang3.version> <!-- to fix CVE-2025-48924. TODO: remove when fixed in spring-boot-dependencies -->
         <commons-io.version>2.16.1</commons-io.version>
