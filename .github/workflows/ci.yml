@@ -45,14 +45,14 @@ jobs:
       # AoT template errors in the vendored web/ source (verified locally,
       # untouched by infra work) — repairing the UI is a separate workstream.
       - name: Build web deps stage (yarn install)
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: web/Dockerfile
           target: deps
           push: false
       - name: Build web development stage
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           file: web/Dockerfile
